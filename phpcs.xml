@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<ruleset name="ScheduleUnpublish">
+	<description>Generally-applicable sniffs for WordPress plugins.</description>
+
+	<!-- What to scan -->
+	<file>source/schedule-unpublish.php</file>
+	<file>source/includes</file>
+
+	<arg value="sp"/> <!-- Show sniff and progress -->
+	<arg name="basepath" value="./"/><!-- Strip the file paths down to the relevant bit -->
+	<arg name="colors"/>
+	<arg name="extensions" value="php"/>
+	<arg name="parallel" value="8"/><!-- Enables parallel processing when available for faster results. -->
+
+    <!-- Linux linebreaks -->
+	<rule ref="Generic.Files.LineEndings"/>
+
+	<!-- When a function becomes too complex, it should be refactored -->
+	<rule ref="Generic.Metrics.CyclomaticComplexity">
+	    <properties>
+	        <property name="complexity" value="4"/>
+	        <property name="absoluteComplexity" value="6"/>
+    	</properties>
+	</rule>
+
+    <!-- Avoid nesting too deep -->
+    <rule ref="Generic.Metrics.NestingLevel">
+        <properties>
+            <property name="nestingLevel" value="4"/>
+            <property name="absoluteNestingLevel" value="6"/>
+        </properties>
+    </rule>
+
+    <!-- All-Caps constants -->
+    <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
+
+    <!-- Function defaults -->
+    <rule ref="PEAR.Functions.ValidDefaultValue"/>
+
+    <!-- Prevent deprecated functions, dangerous functions and short tags -->
+    <rule ref="Generic.PHP.DeprecatedFunctions"/>
+    <rule ref="Generic.PHP.DisallowShortOpenTag"/>
+    <rule ref="Generic.PHP.ForbiddenFunctions"/>
+    <rule ref="Generic.PHP.NoSilencedErrors"/>
+    <rule ref="MySource.PHP.EvalObjectFactory"/>
+    <rule ref="MySource.PHP.ReturnFunctionValue"/>
+
+    <!-- Rules for function doc blocks and inline comments -->
+    <rule ref="Squiz.Commenting.InlineComment" severity="0" />
+    <!-- <rule ref="Squiz.Commenting.InlineComment.InvalidEndChar" severity="0" /> -->
+	<!-- Let's also check that everything is properly documented. -->
+	<rule ref="WordPress-Docs"/>
+	<!-- Add in some extra rules from other standards. -->
+	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+	<rule ref="Generic.Commenting.Todo"/>
+    <!-- <rule ref="PEAR.Commenting.FunctionComment"/> -->
+	<!-- <rule ref="Squiz.Commenting.DocComment" severity="0" /> -->
+	<rule ref="Generic.WhiteSpace.ScopeIndent" severity="0" />
+	<rule ref="PEAR.Functions.ValidDefaultValue" severity="0" />
+
+	<!-- Rules: WordPress Coding Standards -->
+	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
+	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties -->
+	<config name="minimum_supported_wp_version" value="6.2"/>
+
+	<rule ref="WordPress">
+		<exclude name="Squiz.Commenting.ClassComment"/>
+		<exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
+	    <exclude name="PEAR.Commenting.InlineComment"/>
+		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>
+		<exclude name="WordPress.Security.ValidatedSanitizedInput.MissingUnslash" />
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<!-- Value: replace the text domain used. -->
+			<!-- <property name="text_domain" type="array" value="my-plugin"/> -->
+		</properties>
+	</rule>
+	<rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
+		<properties>
+			<property name="blank_line_check" value="true"/>
+		</properties>
+	</rule>
+</ruleset>

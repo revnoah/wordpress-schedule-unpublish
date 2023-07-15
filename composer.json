@@ -1,0 +1,15 @@
+{
+    "name": "noah/wordpress-schedule-unpublish",
+    "description": "A plugin to schedule an unpublish date and time field when editing posts. A scheduled task runs hourly in the background to update the post status.",
+    "type": "plugin",
+    "require": {
+        "wp-coding-standards/wpcs": "^2.3"
+    },
+    "license": "GPL-3",
+    "authors": [
+        {
+            "name": "Noah J Stewart",
+            "email": "noah@noahjstewart.com"
+        }
+    ]
+}

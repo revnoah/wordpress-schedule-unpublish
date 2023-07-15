@@ -1,0 +1,32 @@
+{
+  "name": "wordpress-schedule-unpublish",
+  "version": "1.0.0",
+  "description": "WordPress plugin to schedule a post to unpublish at a specific date and time",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "gulp-notify": "^3.2.0",
+    "gulp-zip": "^4.2.0"
+  },
+  "scripts": {
+    "build": "phpcs && gulp",
+    "test": "phpcs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/revnoah/wordpress-schedule-unpublish.git"
+  },
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "unpublish",
+    "pending"
+  ],
+  "author": "Noah J. Stewart",
+  "license": "GPL3",
+  "bugs": {
+    "url": "https://github.com/revnoah/wordpress-schedule-unpublish/issues"
+  },
+  "homepage": "https://github.com/revnoah/wordpress-schedule-unpublish#readme"
+}
