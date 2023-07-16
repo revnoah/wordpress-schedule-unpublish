@@ -62,14 +62,18 @@ class ScheduleUnpublish_Plugin {
 	 * @return void
 	 */
 	public function register_meta_boxes() {
-		add_meta_box(
-			'scedule_unpublish_unpublish_meta_box',
-			'Schedule Unpublish',
-			array( $this, 'unpublish_meta_box_callback' ),
-			'post',
-			'side',
-			'high'
-		);
+		$post_types = get_post_types( array( 'public' => true ) );
+
+		foreach ( $post_types as $post_type ) {
+			add_meta_box(
+				'schedule_unpublish_metabox',
+				'Schedule Unpublish',
+				array( $this, 'unpublish_meta_box_callback' ),
+				$post_type,
+				'side',
+				'high'
+			);
+		}
 	}
 
 	/**
