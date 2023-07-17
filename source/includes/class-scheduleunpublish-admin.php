@@ -70,7 +70,7 @@ class ScheduleUnpublish_Admin {
 					</tbody>
 				</table>
 			<?php else : ?>
-				<p><?php echo esc_html_e( 'No posts to publish', 'schedule-unpublish' ); ?></p>
+				<p><?php echo esc_html_e( 'No posts to unpublish', 'schedule-unpublish' ); ?></p>
 			<?php endif; ?>
 		</div>
 		<?php
