@@ -1,12 +1,17 @@
 <?php
 /**
- * Plugin instance and meta box
+ * Plugin instance and meta box.
+ *
+ * @package ScheduleUnpublish
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Registers the metabox and saves its schedule.
+ */
 class ScheduleUnpublish_Plugin {
 
 	/**
@@ -38,22 +43,18 @@ class ScheduleUnpublish_Plugin {
 	 * @return void
 	 */
 	public function plugins_loaded() {
-		// Add meta boxes
+		// Add meta boxes.
 		add_action( 'add_meta_boxes', array( $this, 'register_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'save_meta_data' ) );
 
-		// Instantiate the cron class
-		$cron = new ScheduleUnpublish_Cron();
+		$data = new ScheduleUnpublish_Data();
+		add_action( 'init', array( $data, 'register_index' ), 99 );
+		add_action( 'added_post_meta', array( $data, 'on_meta_change' ), 10, 3 );
+		add_action( 'updated_post_meta', array( $data, 'on_meta_change' ), 10, 3 );
+		add_action( 'deleted_post_meta', array( $data, 'on_meta_change' ), 10, 3 );
 
-		// Register activation and deactivation hooks
-		register_activation_hook( __FILE__, array( $this, 'activate' ) );
-		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
-
-		// Schedule the cron event
-		add_action( 'init', array( $cron, 'schedule_event' ) );
-
-		// Hook the cron job
-		add_action( 'schedule_unpublish_event', array( $cron, 'cron_job' ) );
+		// Instantiate the cron class.
+		new ScheduleUnpublish_Cron();
 	}
 
 	/**
@@ -98,11 +99,21 @@ class ScheduleUnpublish_Plugin {
 	 * @return void
 	 */
 	public function save_meta_data( $post_id ) {
-		// phpcs:ignore
-		if ( isset( $_POST['schedule_unpublish'] ) ) {
-			wp_verify_nonce( 'schedule_unpublish', 'unpublish' );
-			$schedule_unpublish = sanitize_text_field( $_POST['schedule_unpublish'] );
-			update_post_meta( $post_id, 'schedule_unpublish', $schedule_unpublish );
+		if ( wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) || ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
 		}
+
+		if ( ! isset( $_POST['unpublish'], $_POST['schedule_unpublish'] ) ||
+			! is_string( $_POST['unpublish'] ) || ! is_string( $_POST['schedule_unpublish'] ) ) {
+			return;
+		}
+
+		$nonce = sanitize_text_field( wp_unslash( $_POST['unpublish'] ) );
+		if ( ! wp_verify_nonce( $nonce, 'schedule_unpublish' ) ) {
+			return;
+		}
+
+		$schedule_unpublish = sanitize_text_field( wp_unslash( $_POST['schedule_unpublish'] ) );
+		update_post_meta( $post_id, 'schedule_unpublish', $schedule_unpublish );
 	}
 }

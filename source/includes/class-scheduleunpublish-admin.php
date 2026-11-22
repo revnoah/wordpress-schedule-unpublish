@@ -1,12 +1,17 @@
 <?php
 /**
- * Admin screen for plugin
+ * Admin screen for plugin.
+ *
+ * @package ScheduleUnpublish
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Displays the scheduled unpublish queue.
+ */
 class ScheduleUnpublish_Admin {
 
 	/**
@@ -38,7 +43,7 @@ class ScheduleUnpublish_Admin {
 	 * @return void
 	 */
 	public function render_publish_queue_page() {
-		$data = new ScheduleUnpublish_Data();
+		$data             = new ScheduleUnpublish_Data();
 		$posts_to_publish = $data->get_posts_to_unpublish();
 		?>
 		<div class="wrap">
@@ -56,8 +61,8 @@ class ScheduleUnpublish_Admin {
 					<tbody>
 						<?php foreach ( $posts_to_publish as $post ) : ?>
 							<?php
-							$post_id = $post->ID;
-							$status = $post->post_status;
+							$post_id        = $post->ID;
+							$status         = $post->post_status;
 							$unpublish_date = get_post_meta( $post_id, 'schedule_unpublish', true );
 							?>
 							<tr id="post-<?php echo esc_html( $post_id ); ?>">
@@ -75,5 +80,4 @@ class ScheduleUnpublish_Admin {
 		</div>
 		<?php
 	}
-
 }
