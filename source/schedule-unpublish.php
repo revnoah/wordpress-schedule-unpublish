@@ -2,11 +2,13 @@
 /**
  * Plugin Name: Schedule Unpublish
  * Description: Adds an unpublish datetime field to automate post unpublishing.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Noah J. Stewart
  * Author URI: https://noahjstewart.com
  * License: GPL v3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * @package ScheduleUnpublish
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -36,4 +38,5 @@ add_action(
  */
 function schedule_unpublish_plugin_deactivation() {
 	wp_clear_scheduled_hook( 'schedule_unpublish_event' );
+	delete_option( 'schedule_unpublish_index_post_cursor' );
 }
